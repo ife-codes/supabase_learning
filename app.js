@@ -9,6 +9,7 @@ const morgan = require("morgan");
 // local imports
 const authRoutes = require("./routes/authRoutes");
 const linkRoutes = require("./routes/linkRoutes");
+const requireAuth = require("./middleware/requireAuth")
 
 // middleware
 app.use(express.json());
@@ -22,8 +23,8 @@ app.listen(3000, () => {
 
 // request
 app.use("/auth", authRoutes);
-app.use("/links", linkRoutes);
+app.use("/links", requireAuth, linkRoutes);
 
 app.use((req, res) => {
-  res.status(404).json({ msg: "Invalid request" });
+  res.status(401).json({ msg: "Invalid request" });
 });
